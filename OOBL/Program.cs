@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OOBL
 {
@@ -10,6 +6,7 @@ namespace OOBL
     {
         static void Main(string[] args)
         {
+
             //TODO : Load data
             Console.WriteLine("Prijavite se u sustav");
 
@@ -25,10 +22,20 @@ namespace OOBL
             Console.WriteLine("Popis opcija - unesite kod za iduću naredbu");
             Console.Write(account.ShowOptions());
 
-            Console.ReadLine();
+            while (!account.ValidOption(Console.ReadLine()))
+            {
+                Console.WriteLine("Nemate ovlasti ili ste unijeli nepostojeću naredbu");
+            };
+
+            FlushScreen();
+
+            do
+            {
+                account.PerformAction();
+            } while (account.ActionResult != null);
         }
 
-        private void FlushScreen()
+        private static void FlushScreen()
         {
             for (int i=0;i<20;i++)
             {
