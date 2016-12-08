@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOBL", "OOBL\OOBL.csproj", "{343CB26E-2C88-4C0B-A03E-880559D30B53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "OOBL\Console.csproj", "{343CB26E-2C88-4C0B-A03E-880559D30B53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
