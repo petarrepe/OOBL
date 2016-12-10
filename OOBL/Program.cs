@@ -19,20 +19,24 @@ namespace OOBL
 
             Console.WriteLine("Prijavljeni ste kao: "+ account.typeOfAccount );
 
-            Console.WriteLine("Popis opcija - unesite kod za iduću naredbu");
-            Console.Write(account.ShowOptions());
-
-            while (!account.ValidOption(Console.ReadLine()))
+            while (true)
             {
-                Console.WriteLine("Nemate ovlasti ili ste unijeli nepostojeću naredbu");
-            };
+                Console.WriteLine("Popis opcija - unesite kod za iduću naredbu");
+                Console.Write(account.ShowOptions());
 
-            FlushScreen();
+                while (!account.ValidOption(Console.ReadLine()))
+                {
+                    Console.WriteLine("Nemate ovlasti ili ste unijeli nepostojeću naredbu");
+                };
 
-            do
-            {
-                account.PerformAction();
-            } while (account.ActionResult != null);
+                FlushScreen();
+
+                do
+                {
+                    account.PerformAction();
+                } while (account.ActionResult != null);
+                FlushScreen();
+            }
         }
 
         private static void FlushScreen()
@@ -41,6 +45,15 @@ namespace OOBL
             {
                 Console.WriteLine();
             }
+        }
+        public static void Display(string message)
+        {
+                Console.WriteLine(message);
+        }
+
+        internal static string DisplayBill(Bill bill)
+        {
+            throw new NotImplementedException();
         }
     }
 }

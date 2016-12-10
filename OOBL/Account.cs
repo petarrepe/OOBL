@@ -8,7 +8,7 @@ namespace OOBL
     {
         private int currentlyChosenAction;
         public AccountManager.AccountTypes typeOfAccount;
-        public string ActionResult { get; private set; }
+        public bool? ActionResult { get; private set; }
         protected Dictionary<string, int> optionsWithCode = new Dictionary<string, int>()
         {
             {"Kreiraj novi račun" , 1 },
@@ -18,10 +18,10 @@ namespace OOBL
             { "Poništavanje računa" , 5},
         };
 
-        internal void setActionResult(string value)
-        {
-            ActionResult = value;
-        }
+        //internal void setActionResult(string value)
+        //{
+        //    ActionResult = value;
+        //}
 
         public Account()
         {
@@ -42,7 +42,7 @@ namespace OOBL
         internal void PerformAction()
         {
             IActionState actionState = ActionStateFactory.GetActionState(currentlyChosenAction);
-            actionState.PerformOperation();
+            ActionResult = actionState.PerformOperation();
         }
 
         internal bool ValidOption(string input)

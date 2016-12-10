@@ -7,6 +7,6 @@
         /// </summary>
         void Exit();
 
-        void PerformOperation();
+        bool? PerformOperation();
     }
 }
