@@ -42,19 +42,19 @@ namespace OOBL
             }
 
             Program.Display(report);
-            return null;
+            return true;
         }
 
         private string GenerateReportForDay(DateTime dateTime)
         {
             StringBuilder sb = new StringBuilder();
-            List<Bill> billsForDay = Persistence.allBills.Where(t=>t.dateTime.Date==dateTime.Date).ToList();
+            List<Bill> billsForDay = Persistence.allBills.Where(t => t.dateTime.Date == dateTime.Date).ToList();
 
-            double totalItemValueForDay=0;
+            double totalItemValueForDay = 0;
 
-            for(int i = 0; i < billsForDay.Count(); i++)
+            for (int i = 0; i < billsForDay.Count(); i++)
             {
-                sb.AppendLine(billsForDay[i].dateTime + " " + billsForDay[i].listOfArticles.Count + " "+ billsForDay[i].TotalAmount);
+                sb.AppendLine(billsForDay[i].dateTime + " , broj artikala = " + billsForDay[i].listOfArticles.Count + ", cijena= " + billsForDay[i].TotalAmount);
                 totalItemValueForDay += billsForDay[i].TotalAmount;
             }
             sb.AppendLine("Ukupan zbroj svih računa: " + totalItemValueForDay);
@@ -65,7 +65,38 @@ namespace OOBL
         private string GenerateReportForArticles()
         {
             StringBuilder sb = new StringBuilder();
-            //TODO : ovdje prepisati kod
+            Dictionary<string, int> soldQuantityPerArticle = new Dictionary<string, int>();
+            var allBills = Persistence.allBills;
+            try
+            {
+                foreach (var bill in allBills)
+                {
+                    foreach (var article in bill.listOfArticles)
+                    {
+                        if (soldQuantityPerArticle.ContainsKey(article.Name))
+                        {
+                            soldQuantityPerArticle[article.Name]++;
+                        }
+                        else
+                        {
+                            soldQuantityPerArticle.Add(article.Name, 1);
+                        }
+                    }
+                }
+
+                var myList = soldQuantityPerArticle.ToList();
+                myList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+
+                sb.AppendLine("Najprodavaniji artikli:");
+                foreach (var entry in myList)
+                {
+                    sb.AppendLine(entry.Key + ",  broj prodanih jedinica: " + entry.Value);
+                }
+            }
+            catch
+            {
+                return null;
+            }
             return sb.ToString();
         }
     }

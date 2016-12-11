@@ -6,8 +6,8 @@ namespace OOBL
     {
         static void Main(string[] args)
         {
+            Persistence.LoadData();
 
-            //TODO : Load data
             Console.WriteLine("Prijavite se u sustav");
 
             while (!AccountManager.ValidLogin)
@@ -30,12 +30,18 @@ namespace OOBL
                 };
 
                 FlushScreen();
-
-                do
+                while (true)
                 {
-                    account.PerformAction();
-                } while (account.ActionResult != null);
-                FlushScreen();
+                    do
+                    {
+                        account.PerformAction();
+                    } while (account.ActionResult == false);
+                    FlushScreen();
+
+                    Persistence.SaveAllData();
+
+                    break;
+                }
             }
         }
 
@@ -51,9 +57,18 @@ namespace OOBL
                 Console.WriteLine(message);
         }
 
-        internal static string DisplayBill(Bill bill)
+        internal static void DisplayBill(Bill bill)
         {
-            throw new NotImplementedException();
+            Console.WriteLine();
+            Console.WriteLine("Vrijeme računa:"+ bill.dateTime);
+            Console.WriteLine("Ukupan iznos: " + bill.TotalAmount);
+            Console.WriteLine("Artikli na računu");
+            foreach(var item in bill.listOfArticles)
+            {
+                Console.WriteLine(string.Format("{0, -30}", item.Name) + " Price:" + item.Price +"        Unit:"+item.unitOfSelling);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }

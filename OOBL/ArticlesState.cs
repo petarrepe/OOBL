@@ -49,7 +49,7 @@ namespace OOBL
                         break;
                 }
             }
-            return null;
+            return true;
         }
 
         private void EditArticle()
@@ -67,15 +67,21 @@ namespace OOBL
 
             Console.WriteLine("Unesite novi naziv artikla:");
             article.Name = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Unesite novu cijenu:");
+                article.Price = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Unesite novu cijenu:");
-            article.Price =  int.Parse(Console.ReadLine());
+                Console.WriteLine("Unesite novi iznos PDV-a:");
+                article.VatRate = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Unesite novi iznos PDV-a:");
-            article.VatRate = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
-            article.unitOfSelling= (Console.ReadLine()=="0") ? Util.UnitOfSelling.Kilogram: Util.UnitOfSelling.Piece ;
+                Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
+                article.unitOfSelling = (Console.ReadLine() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
+            }
+            catch
+            {
+                Console.WriteLine("Pogrešan podatak: povratak na prijašnji meni...");
+            }
         }
 
         private void DisplayAllArticles()
@@ -91,6 +97,8 @@ namespace OOBL
 
         private void DeleteArticle()
         {
+            DisplayAllArticles();
+
             int input;
             do
             {
@@ -102,7 +110,6 @@ namespace OOBL
 
             Persistence.DeleteArticle(article);
             Console.WriteLine("Izbrisano");
-            Console.ReadLine();
         }
 
         private void CreateNewArticle()
@@ -110,17 +117,23 @@ namespace OOBL
             Article article = new OOBL.Article();
             Console.WriteLine("Unesite novi naziv artikla:");
             article.Name = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Unesite novu cijenu:");
+                article.Price = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Unesite novu cijenu:");
-            article.Price = int.Parse(Console.ReadLine());
+                Console.WriteLine("Unesite novi iznos PDV-a:");
+                article.VatRate = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Unesite novi iznos PDV-a:");
-            article.VatRate = int.Parse(Console.ReadLine());
+                Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
+                article.unitOfSelling = (Console.ReadLine() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
 
-            Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
-            article.unitOfSelling = (Console.ReadLine() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
-
-            Persistence.SaveArticle(article);
+                Persistence.SaveArticle(article);
+            }
+            catch
+            {
+                Console.WriteLine("Pogrešan podatak: povratak na prijašnji meni...");
+            }
         }
 
         internal string ShowOptions()

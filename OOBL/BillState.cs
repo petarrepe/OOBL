@@ -31,7 +31,7 @@ namespace OOBL
                 //administrator koji može editirati i brisati račune
                 EditOrBill();
             }
-            return null;
+            return true;
         }
 
         private void EditOrBill()
@@ -66,6 +66,7 @@ namespace OOBL
             {
                 int code = int.Parse(userInput);
                 bill.AddArticle(allArticles[code]);
+                Console.WriteLine("Dodano: " + allArticles[code].Name);
             }
             catch
             {

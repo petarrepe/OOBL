@@ -8,10 +8,14 @@ namespace OOBL
     [XmlRoot("Bill")]
     public class Bill
     {
-        internal DateTime dateTime;
-        internal List<Article> listOfArticles = new List<Article>();
-        internal double VatAmount;
-        internal double TotalAmount;
+        [XmlElement("dateTime")]
+        public DateTime dateTime;
+        [XmlElement("listOfArticles")]
+        public List<Article> listOfArticles = new List<Article>();
+        [XmlElement("VatAmount")]
+        public double VatAmount;
+        [XmlElement("TotalAmount")]
+        public double TotalAmount;
 
         public Bill()
         {

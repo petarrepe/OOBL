@@ -16,7 +16,7 @@ namespace OOBL
             allBills.Add(bill);
         }
 
-        public static void DeleteBill(Bill bill)
+        public static void ReplaceBill(Bill bill)
         {
             var billWithSameDT = allBills.Where(t => t.dateTime == bill.dateTime).First();
             if (billWithSameDT == null)
@@ -31,7 +31,13 @@ namespace OOBL
         }
         public static void SaveArticle(Article article)
         {
-            var articleWithSameName = allArticles.Where(t => t.Name == article.Name).First();
+            if (allArticles.Count == 0)
+            {
+                allArticles.Add(article);
+                return;
+            }
+
+            var articleWithSameName = allArticles.Where(t => t.Name == article.Name).FirstOrDefault();
             if (articleWithSameName == null)
             {
                 allArticles.Add(article);
@@ -42,22 +48,39 @@ namespace OOBL
                 allArticles.Add(article);
             }
         }
+
+        internal static void SaveAllData()
+        {
+            SaveArticles();
+            SaveBills();
+        }
+
         public static List<Article> LoadArticles()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ArticlesAsList));
-            var fs = new FileStream(@"c:\bills.xml", FileMode.OpenOrCreate);
-
-            var temp = (ArticlesAsList)serializer.Deserialize(fs);
-            //serializer.Serialize(Console.Out, personen);
-            return temp.ArticleList;
+            ArticlesAsList temp;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ArticlesAsList));
+                using (var fs = new FileStream(@"articles.xml", FileMode.OpenOrCreate))
+                {
+                    temp = (ArticlesAsList)serializer.Deserialize(fs);
+                }
+                //serializer.Serialize(Console.Out, personen);
+                return temp.ArticleList;
+            }
+            catch
+            {
+                return new List<OOBL.Article>();
+            }
         }
         private static void SaveArticles()
         {
             ArticlesAsList artList = new ArticlesAsList(allArticles);
 
-            var ser = new XmlSerializer(typeof(Article));
+            //typeof(Article)
+            var ser = new XmlSerializer(typeof(ArticlesAsList));
 
-            using (FileStream fs = new FileStream(@"c:\articles.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(@"articles.xml", FileMode.OpenOrCreate))
             {
                 ser.Serialize(fs, artList);
             }
@@ -67,9 +90,9 @@ namespace OOBL
         {
             BillsAsList billList = new BillsAsList(allBills);
 
-            var ser = new XmlSerializer(typeof(Article));
+            var ser = new XmlSerializer(typeof(BillsAsList));
 
-            using (FileStream fs = new FileStream(@"c:\bills.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(@"bills.xml", FileMode.OpenOrCreate))
             {
                 ser.Serialize(fs, billList);
             }
@@ -77,21 +100,39 @@ namespace OOBL
 
         private static List<Bill> LoadBills()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(BillsAsList));
-            var fs = new FileStream(@"c:\bills.xml", FileMode.OpenOrCreate);
-
-            var temp = (BillsAsList)serializer.Deserialize(fs);
-            //serializer.Serialize(Console.Out, personen);
-            return temp.BillsList;
+            BillsAsList temp;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(BillsAsList));
+                using (var fs = new FileStream(@"bills.xml", FileMode.OpenOrCreate))
+                {
+                    temp = (BillsAsList)serializer.Deserialize(fs);
+                }
+               
+                return temp.BillsList;
+            }
+            catch
+            {
+                return new List<Bill>();
+            }
         }
         internal static void DeleteArticle(Article article)
         {
             allArticles.Remove(article);
         }
 
+        internal static void LoadData()
+        {
+            allBills = LoadBills();
+            allArticles = LoadArticles();
+        }
+
         public class ArticlesAsList
         {
-            [XmlArray("ArticleList"), XmlArrayItem(typeof(Article), ElementName = "Article")]
+            [XmlArray("ArticleList")]
+            //[XmlArrayItem(typeof(Article), ElementName = "Article")]
+            [XmlArrayItem("Article")]
+
             public List<Article> ArticleList { get; set; }
             public ArticlesAsList(List<Article> listOfAllArticles)
             {

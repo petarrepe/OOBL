@@ -48,7 +48,7 @@
     <Compile Include="AccountManager.cs" />
     <Compile Include="ActionStateFactory.cs" />
     <Compile Include="AdministratorAccount.cs" />
-    <Compile Include="Articles.cs" />
+    <Compile Include="Article.cs" />
     <Compile Include="ArticlesState.cs" />
     <Compile Include="Bill.cs" />
     <Compile Include="BillState.cs" />
