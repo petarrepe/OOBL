@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace OOBL
 {
@@ -15,11 +16,6 @@ namespace OOBL
             this.billAction = action;
         }
 
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool? PerformOperation()
         {
             if (billAction == Util.Actions.NewBill)
@@ -28,16 +24,17 @@ namespace OOBL
             }
             else if (billAction == Util.Actions.BillDeletion)
             {
-                //administrator koji može editirati i brisati račune
-                EditOrBill();
+                //TODO : administrator koji može editirati i brisati račune
+                EditBill();
             }
             return true;
         }
 
-        private void EditOrBill()
+        private void EditBill()
         {
             bill = new Bill();
 
+            throw new NotImplementedException();
         }
 
         private void CreateNewBill()
@@ -50,38 +47,59 @@ namespace OOBL
             string userInput;
             do
             {
-                userInput = Console.ReadLine();
-                AddArticleToBill(userInput);
+                userInput = Program.GetUserInput();
+                if (AddArticleToBill(userInput) )
+                {
+                    Program.Display("Dodano: " + allArticles[int.Parse(userInput)].Name);
+                    Program.Display("Dodajte novi proizvod ili unesite 'p' za izdavanje racuna");
+                }
+                else
+                {
+                    Program.Display("Došlo je do pogreške! Molimo pokušajte opet");
+                }
             } while (userInput != "p");
 
 
             dl();
-            Program.DisplayBill(bill);
+
+            PrintBill();
+
             Persistence.SaveBill(bill);
         }
 
-        private void AddArticleToBill(string userInput)
+        private void PrintBill()
+        {
+            var printer = new ConsolePrinter();
+            printer.Print(bill);
+        }
+
+        private bool AddArticleToBill(string userInput)
         {
             try
             {
                 int code = int.Parse(userInput);
                 bill.AddArticle(allArticles[code]);
-                Console.WriteLine("Dodano: " + allArticles[code].Name);
+
+                return true;
             }
             catch
             {
-                return;
+                return false;
             }
 
         }
 
         private void DisplayArticleInformation()
-        {         
-            Program.Display("Odaberite kôd artikla kojeg želite dodati na račun \nUnesite 'p' za ispis računa");
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Odaberite kôd artikla kojeg želite dodati na račun \nUnesite 'p' za ispis računa");
             for ( int i=0; i < allArticles.Count;i++)
             {
-                Program.Display(string.Format("{0, -30}", allArticles[i].Name) + " " +i);
+                sb.AppendLine(string.Format("{0, -30}", allArticles[i].Name) + " " +i);
             }
+
+            Program.Display(sb.ToString());
         }
 
         public void BillDelegate()

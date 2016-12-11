@@ -2,7 +2,8 @@
 {
     public static class Util
     {
-        public enum Actions{
+        public enum Actions
+        {
             NewBill,
             ReportForDay,
             ReportForArticles,

@@ -4,11 +4,16 @@ namespace OOBL
 {
     class Program
     {
+        /// <summary>
+        /// Od funkcionalnosti jedino nije moguće raditi izmjene na postojećim / izdanim računima.
+        /// Znam da predano rješenje nije potpuno u skladu sa objektnom paradigmom, nažalost rok za predaju
+        /// je došao prebrzo.
+        /// </summary>
         static void Main(string[] args)
         {
             Persistence.LoadData();
 
-            Console.WriteLine("Prijavite se u sustav");
+            Console.WriteLine("Prijavite se u sustav (* administrator = 0000 , obicni korisnik = 1234)");
 
             while (!AccountManager.ValidLogin)
             {
@@ -22,6 +27,7 @@ namespace OOBL
             while (true)
             {
                 Console.WriteLine("Popis opcija - unesite kod za iduću naredbu");
+                Console.WriteLine();
                 Console.Write(account.ShowOptions());
 
                 while (!account.ValidOption(Console.ReadLine()))
@@ -35,7 +41,8 @@ namespace OOBL
                     do
                     {
                         account.PerformAction();
-                    } while (account.ActionResult == false);
+                    } while (account.ActionRequiresSavingData == false);
+
                     FlushScreen();
 
                     Persistence.SaveAllData();
@@ -47,7 +54,7 @@ namespace OOBL
 
         private static void FlushScreen()
         {
-            for (int i=0;i<20;i++)
+            for (int i=0;i<15;i++)
             {
                 Console.WriteLine();
             }
@@ -57,18 +64,10 @@ namespace OOBL
                 Console.WriteLine(message);
         }
 
-        internal static void DisplayBill(Bill bill)
+        public static string GetUserInput()
         {
-            Console.WriteLine();
-            Console.WriteLine("Vrijeme računa:"+ bill.dateTime);
-            Console.WriteLine("Ukupan iznos: " + bill.TotalAmount);
-            Console.WriteLine("Artikli na računu");
-            foreach(var item in bill.listOfArticles)
-            {
-                Console.WriteLine(string.Format("{0, -30}", item.Name) + " Price:" + item.Price +"        Unit:"+item.unitOfSelling);
-            }
-            Console.WriteLine();
-            Console.WriteLine();
+            var input = Console.ReadLine();
+            return input;
         }
     }
 }

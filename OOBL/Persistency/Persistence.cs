@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
@@ -51,8 +50,8 @@ namespace OOBL
 
         internal static void SaveAllData()
         {
-            SaveArticles();
-            SaveBills();
+            SaveAllArticles();
+            SaveAllBills();
         }
 
         public static List<Article> LoadArticles()
@@ -65,19 +64,18 @@ namespace OOBL
                 {
                     temp = (ArticlesAsList)serializer.Deserialize(fs);
                 }
-                //serializer.Serialize(Console.Out, personen);
+                
                 return temp.ArticleList;
             }
             catch
             {
-                return new List<OOBL.Article>();
+                return new List<Article>();
             }
         }
-        private static void SaveArticles()
+        private static void SaveAllArticles()
         {
             ArticlesAsList artList = new ArticlesAsList(allArticles);
 
-            //typeof(Article)
             var ser = new XmlSerializer(typeof(ArticlesAsList));
 
             using (FileStream fs = new FileStream(@"articles.xml", FileMode.OpenOrCreate))
@@ -86,7 +84,7 @@ namespace OOBL
             }
         }
 
-        private static void SaveBills()
+        private static void SaveAllBills()
         {
             BillsAsList billList = new BillsAsList(allBills);
 
@@ -127,10 +125,12 @@ namespace OOBL
             allArticles = LoadArticles();
         }
 
+        /// <summary>
+        /// Pomoćna klasa koja pomaže pri ispravnoj serijalizaciji
+        /// </summary>
         public class ArticlesAsList
         {
             [XmlArray("ArticleList")]
-            //[XmlArrayItem(typeof(Article), ElementName = "Article")]
             [XmlArrayItem("Article")]
 
             public List<Article> ArticleList { get; set; }
@@ -143,7 +143,9 @@ namespace OOBL
             }
         }
 
-
+        /// <summary>
+        /// Pomoćna klasa koja pomaže pri ispravnoj serijalizaciji
+        /// </summary>
         public class BillsAsList
         {
             [XmlArray("BillList"), XmlArrayItem(typeof(Bill), ElementName = "Bill")]

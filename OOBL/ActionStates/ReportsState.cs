@@ -14,14 +14,10 @@ namespace OOBL
             this.reportForArticles = reportForArticles;
         }
 
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool? PerformOperation()
         {
             string report;
+
             if (reportForArticles == Util.Actions.ReportForArticles)
             {
                 report = GenerateReportForArticles();
@@ -30,13 +26,13 @@ namespace OOBL
             //reportForArticles == Util.Actions.ReportForDay
             else
             {
-                Console.WriteLine("Unesite datum:");
+                Program.Display("Unesite datum u formatu DD.MM.YYYY :");
 
-                var input = Console.ReadLine();
+                var input = Program.GetUserInput();
                 DateTime result;
                 while (!DateTime.TryParse(input, out result))
                 {
-                    Console.WriteLine("Unesite ispravan datum");
+                    Program.Display("Unesite ispravan datum");
                 }
                 report = GenerateReportForDay(result);
             }

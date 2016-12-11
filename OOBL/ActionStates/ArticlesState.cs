@@ -19,11 +19,6 @@ namespace OOBL
             this.articlesAction = action;
         }
 
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool? PerformOperation()
         {
             if (articlesAction == Util.Actions.ArticlesEdit)
@@ -32,8 +27,8 @@ namespace OOBL
                 int input=-1;
                 do
                 {
-                    Console.WriteLine("Unesite kod iduce naredbe");
-                    int.TryParse(Console.ReadLine(), out input);
+                    Program.Display("Unesite kod iduce naredbe");
+                    int.TryParse(Program.GetUserInput(), out input);
                 } while (input < 0 || input > optionsWithCode.Count);
 
                 switch (input)
@@ -59,28 +54,28 @@ namespace OOBL
             int input;
             do
             {
-                Console.WriteLine("Odaberite kod artikla kojeg želite promijeniti");
-                int.TryParse(Console.ReadLine(), out input);
+                Program.Display("Odaberite kod artikla kojeg želite promijeniti");
+                int.TryParse(Program.GetUserInput(), out input);
             } while (input < 0 || input > allArticles.Count);
 
             Article article = allArticles[input];
 
-            Console.WriteLine("Unesite novi naziv artikla:");
-            article.Name = Console.ReadLine();
+            Program.Display("Unesite novi naziv artikla:");
+            article.Name = Program.GetUserInput();
             try
             {
-                Console.WriteLine("Unesite novu cijenu:");
-                article.Price = int.Parse(Console.ReadLine());
+                Program.Display("Unesite novu cijenu:");
+                article.Price = int.Parse(Program.GetUserInput());
 
-                Console.WriteLine("Unesite novi iznos PDV-a:");
-                article.VatRate = int.Parse(Console.ReadLine());
+                Program.Display("Unesite novi iznos PDV-a:");
+                article.VatRate = int.Parse(Program.GetUserInput());
 
-                Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
-                article.unitOfSelling = (Console.ReadLine() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
+                Program.Display("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
+                article.unitOfSelling = (Program.GetUserInput() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
             }
             catch
             {
-                Console.WriteLine("Pogrešan podatak: povratak na prijašnji meni...");
+                Program.Display("Pogrešan podatak: povratak na prijašnji meni...");
             }
         }
 
@@ -102,43 +97,45 @@ namespace OOBL
             int input;
             do
             {
-                Console.WriteLine("Odaberite kod artikla kojeg želite izbrisati");
-                int.TryParse(Console.ReadLine(), out input);
+                Program.Display("Odaberite kod artikla kojeg želite izbrisati");
+                int.TryParse(Program.GetUserInput(), out input);
             } while (input < 0 || input > allArticles.Count);
 
             Article article = allArticles[input];
 
             Persistence.DeleteArticle(article);
-            Console.WriteLine("Izbrisano");
+            Program.Display("Izbrisano");
         }
 
         private void CreateNewArticle()
         {
-            Article article = new OOBL.Article();
-            Console.WriteLine("Unesite novi naziv artikla:");
-            article.Name = Console.ReadLine();
+            Article article = new Article();
+
+            Program.Display("Unesite novi naziv artikla:");
+            article.Name = Program.GetUserInput();
             try
             {
-                Console.WriteLine("Unesite novu cijenu:");
-                article.Price = int.Parse(Console.ReadLine());
+                Program.Display("Unesite novu cijenu:");
+                article.Price = int.Parse(Program.GetUserInput());
 
-                Console.WriteLine("Unesite novi iznos PDV-a:");
-                article.VatRate = int.Parse(Console.ReadLine());
+                Program.Display("Unesite novi iznos PDV-a:");
+                article.VatRate = int.Parse(Program.GetUserInput());
 
-                Console.WriteLine("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
-                article.unitOfSelling = (Console.ReadLine() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
+                Program.Display("Unesite 0 ako se proizvod prodaje na kilograme ili 1 ako se prodaje na komade:");
+                article.unitOfSelling = (Program.GetUserInput() == "0") ? Util.UnitOfSelling.Kilogram : Util.UnitOfSelling.Piece;
 
                 Persistence.SaveArticle(article);
             }
             catch
             {
-                Console.WriteLine("Pogrešan podatak: povratak na prijašnji meni...");
+                Program.Display("Pogrešan podatak: povratak na prijašnji meni...");
             }
         }
 
         internal string ShowOptions()
-        {   //pripada li ovo ovoj klasi?
+        {   
             StringBuilder sb = new StringBuilder();
+
             foreach (var entry in optionsWithCode)
             {
                 sb.AppendLine(string.Format("{0, -30}", entry.Key) + " " + entry.Value);

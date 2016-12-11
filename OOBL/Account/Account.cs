@@ -7,8 +7,8 @@ namespace OOBL
     public class Account
     {
         private int currentlyChosenAction;
-        public AccountManager.AccountTypes typeOfAccount;
-        public bool? ActionResult { get; private set; }
+        internal AccountManager.AccountTypes typeOfAccount;
+        public bool? ActionRequiresSavingData { get; private set; }
         protected Dictionary<string, int> optionsWithCode = new Dictionary<string, int>()
         {
             {"Kreiraj novi račun" , 1 },
@@ -18,18 +18,13 @@ namespace OOBL
             { "Poništavanje računa" , 5},
         };
 
-        //internal void setActionResult(string value)
-        //{
-        //    ActionResult = value;
-        //}
-
         public Account()
         {
             this.typeOfAccount = AccountManager.AccountTypes.Regular;
         }
 
-        internal string ShowOptions()
-        {   //pripada li ovo ovoj klasi?
+        internal virtual string ShowOptions()
+        { 
             StringBuilder sb = new StringBuilder();
             foreach (var entry in optionsWithCode)
             {
@@ -42,7 +37,7 @@ namespace OOBL
         internal void PerformAction()
         {
             IActionState actionState = ActionStateFactory.GetActionState(currentlyChosenAction);
-            ActionResult = actionState.PerformOperation();
+            ActionRequiresSavingData = actionState.PerformOperation();
         }
 
         internal bool ValidOption(string input)

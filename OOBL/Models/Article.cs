@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 namespace OOBL
 {
     [Serializable]
-    //[XmlRoot("Article")]
     public class Article
     {
         [XmlElement("Name")]

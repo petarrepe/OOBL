@@ -33,17 +33,11 @@ namespace OOBL
                 return;
             }
         }
-        public void DeleteArticle(Article article)
-        {
-            listOfArticles.Remove(article);
-        }
-
-
-        //TODO : u pozadini pozvati complete bill info
+        
         internal void calculateBillInformation()
         {
-            double totalAmount=0;
-            double vatAmount=0;
+            double totalAmount = 0;
+            double vatAmount = 0;
 
             dateTime = DateTime.Now;
 

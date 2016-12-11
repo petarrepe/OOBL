@@ -8,6 +8,6 @@ namespace OOBL
 {
     interface IPrinter
     {
-        void Print();
+        void Print(Bill bill);
     }
 }
