@@ -8,7 +8,7 @@ namespace OOBL
         private Util.Actions billAction;
         private delegate void Delegate();
         private Bill bill = new Bill();
-        private List<Article>  allArticles = Persistence.LoadArticles();
+        private List<Article> allArticles = Persistence.allArticles;
 
         public BillState(Util.Actions action)
         {

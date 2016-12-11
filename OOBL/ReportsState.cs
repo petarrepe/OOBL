@@ -48,7 +48,7 @@ namespace OOBL
         private string GenerateReportForDay(DateTime dateTime)
         {
             StringBuilder sb = new StringBuilder();
-            List<Bill> billsForDay = Persistence.LoadBills().Where(t=>t.dateTime.Date==dateTime.Date).ToList();
+            List<Bill> billsForDay = Persistence.allBills.Where(t=>t.dateTime.Date==dateTime.Date).ToList();
 
             double totalItemValueForDay=0;
 

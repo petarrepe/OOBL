@@ -7,7 +7,7 @@ namespace OOBL
     class ArticlesState : IActionState
     {
         private Util.Actions articlesAction;
-        private List<Article> allArticles = Persistence.LoadArticles();
+        private List<Article> allArticles = Persistence.allArticles;
         protected Dictionary<string, int> optionsWithCode = new Dictionary<string, int>()
         {
             {"Kreiraj novi artikl" , 1 },

@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace OOBL
 {
+    [Serializable]
+    [XmlRoot("Bill")]
     public class Bill
     {
         internal DateTime dateTime;
         internal List<Article> listOfArticles = new List<Article>();
         internal double VatAmount;
         internal double TotalAmount;
+
+        public Bill()
+        {
+
+        }
 
         public void AddArticle(Article article)
         {
